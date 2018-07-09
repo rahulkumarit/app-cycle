@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "532875154608",
+    "firebase_url": "https://hicycle-cb72f.firebaseio.com",
+    "project_id": "hicycle-cb72f",
+    "storage_bucket": "hicycle-cb72f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532875154608:android:777cf47578c003d0",
+        "android_client_info": {
+          "package_name": "com.techzellent.hicycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532875154608-qd776al2b90tffvqn2ihod19hguduaj4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techzellent.hicycle",
+            "certificate_hash": "ac56cd9af0d62b6bd1b7ce1ffdda32699a828da1"
+          }
+        },
+        {
+          "client_id": "532875154608-aj3sl49h367s222kiiko3171bqupv3m9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techzellent.hicycle",
+            "certificate_hash": "e15e0e2b8247098910cc11fd81c5718008939e27"
+          }
+        },
+        {
+          "client_id": "532875154608-s6sb3vno8lsm2oq1b8vlrpalmdpbviis.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "532875154608-s6sb3vno8lsm2oq1b8vlrpalmdpbviis.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_P-c0OGSAvBs8nVHnGwzm4DvxmZmjQA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532875154608-s6sb3vno8lsm2oq1b8vlrpalmdpbviis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

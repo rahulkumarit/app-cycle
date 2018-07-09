@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Hire">
+
+    <include
+        layout="@layout/header"
+        android:id="@+id/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        ></include>
+    <Chronometer
+        android:id="@+id/cm_hire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="50dp"
+        android:layout_centerInParent="true"
+        >
+        <TextView
+            android:id="@+id/tv_timer_titel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Timer"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            />
+        <TextView
+            android:id="@+id/tv_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tv_timer_titel"
+            android:layout_marginTop="20dp"
+            android:text="00:00:00"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btnHireLeave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnUnlock"
+        android:text="Hire Bicycle"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        android:textColor="@color/appWhite"
+        />
+    <Button
+        android:id="@+id/btnUnlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Unlock Bicycle"
+        android:layout_marginBottom="100dp"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        android:textColor="@color/appWhite"
+        />
+</RelativeLayout>
