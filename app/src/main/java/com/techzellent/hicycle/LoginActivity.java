@@ -35,6 +35,11 @@ import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.techzellent.hicycle.util.SharedPrefUtil;
+import com.techzellent.hicycle.wsCalling.WSUtils;
+import com.techzellent.hicycle.wsCalling.WsCalling;
+import com.techzellent.hicycle.wsCalling.WsReponse;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +49,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, WsReponse {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -196,16 +201,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            Log.e("LoginActivity","cancel");
+            Log.e("LoginActivity", "cancel");
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            Log.e("LoginActivity","else part");
-            if (new SharedPrefUtil(LoginActivity.this).isLoggedIn()){
+            Log.e("LoginActivity", "else part");
+            if (new SharedPrefUtil(LoginActivity.this).isLoggedIn()) {
                 goToStationMap();
-            }
-            else{
+            } else {
                 showProgress(true);
                 mAuthTask = new UserLoginTask(email, password);
                 mAuthTask.execute((Void) null);
@@ -303,6 +307,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
+    public void successReposse(int responseCode, String response) {
+
+    }
+
+    @Override
+    public void errorResponse(int responseCode, String exception) {
+
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -342,10 +356,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
 //                if (pieces[0].equals(mEmail)) {
-                  if(mEmail.endsWith("@gmail.com")) {
+                if (mEmail.endsWith("@gmail.com")) {
                     // Account exists, return true if the password matches.
 //                    return pieces[1].equals(mPassword);
-                      return mPassword.trim().length()>=1;
+                    return mPassword.trim().length() >= 1;
                 }
             }
 
@@ -359,7 +373,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                Toast.makeText(LoginActivity.this,"Login Successfull", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();
                 (new SharedPrefUtil(LoginActivity.this)).SaveLoginStatus(true);
                 logLoginEvent(mEmail);
                 goToStationMap();
@@ -377,18 +391,31 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
     }
 
-    private void goToStationMap(){
-        Intent i = new Intent(LoginActivity.this, StationMap.class);
+    private void goToStationMap() {
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("userId", "test");
+            jsonBody.put("password", "test");
+            jsonBody.put("cycleNum", "1");
+            jsonBody.put("stationNum", "1");
+            final String requestBody = jsonBody.toString();
+            WsCalling.postResponseWithParam(WSUtils.LOGIN_WS_CODE, WSUtils.LOGIN, requestBody, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+       /* Intent i = new Intent(LoginActivity.this, StationMap.class);
         LoginActivity.this.startActivity(i);
-        LoginActivity.this.finish();
+        LoginActivity.this.finish();*/
     }
 
-    private void logLoginEvent(String userEmail){
-        Bundle bundle= new Bundle();
+    private void logLoginEvent(String userEmail) {
+        Bundle bundle = new Bundle();
         bundle.putBoolean("login", true);
         mFirebaseAnalytics.logEvent("login", bundle);
         mFirebaseAnalytics.setUserId(userEmail);
-        mFirebaseAnalytics.setUserProperty("login","yes");
+        mFirebaseAnalytics.setUserProperty("login", "yes");
 
     }
 }
