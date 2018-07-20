@@ -5,16 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -24,9 +23,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.techzellent.hicycle.models.Stations;
@@ -36,7 +32,7 @@ import com.techzellent.hicycle.wsCalling.WSUtils;
 import com.techzellent.hicycle.wsCalling.WsCalling;
 import com.techzellent.hicycle.wsCalling.WsReponse;
 
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 public class StationMap extends FragmentActivity
         implements OnMapReadyCallback,
@@ -90,7 +86,6 @@ public class StationMap extends FragmentActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
 //        // Add a marker at last location and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -103,7 +98,6 @@ public class StationMap extends FragmentActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         // Using the util method when received permission result
         // Using the util method when received permission result
         permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -187,7 +181,6 @@ public class StationMap extends FragmentActivity
     public void errorResponse(int responseCode, String exception) {
 
     }
-
     private void setMultipleMarker(String response) {
         if (!TextUtils.isEmpty(response)) {
             Gson gson = new Gson();

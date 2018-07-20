@@ -4,38 +4,44 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPrefUtil {
+    private Context context;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor spe;
 
-    Context context;
-
-    public SharedPrefUtil(Context cnt){
+    public SharedPrefUtil(Context cnt) {
         this.context = cnt;
+        sp = context.getSharedPreferences("HiCycle", Context.MODE_PRIVATE);
+        spe = sp.edit();
     }
 
-    public void SaveLoginStatus(boolean isLoggedIn){
-        SharedPreferences sp = context.getSharedPreferences("HiCycle",Context.MODE_PRIVATE);
-        SharedPreferences.Editor spe = sp.edit();
-        spe.putBoolean("isLoggedIn",isLoggedIn);
+    public void saveLoginStatus(boolean isLoggedIn) {
+        spe.putBoolean("isLoggedIn", isLoggedIn);
         spe.commit();
     }
 
-    public boolean isLoggedIn(){
-        SharedPreferences sp= context.getSharedPreferences("HiCycle", Context.MODE_PRIVATE);
+    public boolean isLoggedIn() {
         boolean isLoggedIn = sp.getBoolean("isLoggedIn", false);
         return isLoggedIn;
     }
 
-    public void saveStartTime(long startTime){
-        SharedPreferences sp = context.getSharedPreferences("HiCycle", Context.MODE_PRIVATE);
-        SharedPreferences.Editor spe = sp.edit();
+    public void setToken(String token) {
+        spe.putString("token", token);
+        spe.commit();
+    }
+
+    public String getToken() {
+        String token = sp.getString("token", "");
+        return token;
+    }
+
+    public void saveStartTime(long startTime) {
         spe.putLong("startTime", startTime);
         spe.commit();
     }
 
-    public long getStartTime(){
-        SharedPreferences sp = context.getSharedPreferences("HiCycle",Context.MODE_PRIVATE);
+    public long getStartTime() {
         long startTime = sp.getLong("startTime", 0);
         return startTime;
     }
-
 
 }
