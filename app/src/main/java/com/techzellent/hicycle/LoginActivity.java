@@ -355,7 +355,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             e.printStackTrace();
             showProgress(false);
         }
-
     }
 
     private void logLoginEvent(String userEmail) {

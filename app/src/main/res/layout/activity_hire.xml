@@ -7,45 +7,43 @@
     tools:context=".Hire">
 
     <include
-        layout="@layout/header"
         android:id="@+id/layout_header"
+        layout="@layout/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        ></include>
+        android:layout_alignParentTop="true"></include>
+
     <Chronometer
         android:id="@+id/cm_hire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="50dp"
         android:layout_centerInParent="true"
-        >
+        android:padding="50dp">
+
         <TextView
             android:id="@+id/tv_timer_titel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Timer"
-            android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            />
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/tv_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/tv_timer_titel"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="00:00:00"
-            android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -55,20 +53,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnUnlock"
-        android:text="Hire Bicycle"
         android:layout_margin="10dp"
         android:background="@color/colorAccent"
-        android:textColor="@color/appWhite"
-        />
+        android:text="Hire Bicycle"
+        android:textColor="@color/appWhite" />
+
     <Button
         android:id="@+id/btnUnlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Unlock Bicycle"
-        android:layout_marginBottom="100dp"
         android:layout_margin="10dp"
+        android:layout_marginBottom="100dp"
         android:background="@color/colorAccent"
-        android:textColor="@color/appWhite"
-        />
+        android:text="Unlock Bicycle"
+        android:textColor="@color/appWhite" />
+
+      <ProgressBar
+        android:id="@+id/hire_progress"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_header"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

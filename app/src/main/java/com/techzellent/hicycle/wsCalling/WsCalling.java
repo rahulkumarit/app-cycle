@@ -11,6 +11,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.techzellent.hicycle.AppController;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by SONI on 7/19/2018.
@@ -48,12 +50,13 @@ public class WsCalling {
                 @Override
                 public void onResponse(String response) {
                     Log.e("VOLLEY RESPONSE", response);
-                    wsReponse.successReposse(code,response);
+                    wsReponse.successReposse(code, response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("VOLLEY ", error.toString());
+                    wsReponse.errorResponse(code, error.toString());
                 }
             }) {
                 @Override
@@ -64,6 +67,15 @@ public class WsCalling {
                         return null;
                     }
                 }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    return params;
+                }
+
+
             };
             AppController.getInstance().addToRequestQueue(stringRequest);
         } catch (Exception e) {
