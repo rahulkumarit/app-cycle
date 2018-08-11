@@ -25,9 +25,9 @@
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="no_internet_connection">Please check internent connection and try again !</string>
 
     <!-- String is necessary for various services i.e. Analytics of Firebase project -->
 
-    <string name="google_app_id">1:532875154608:android:777cf47578c003d0</string>
 
 </resources>

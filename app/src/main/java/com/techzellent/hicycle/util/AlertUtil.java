@@ -21,7 +21,7 @@ public class AlertUtil {
         } else {
             builder = new AlertDialog.Builder(context);
         }
-         builder.setTitle(title)
+        builder.setTitle(title)
                 .setMessage(msg)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -31,4 +31,29 @@ public class AlertUtil {
                 })
                 .show();
     }
+
+    public static void showAletDailog(Context context, final View.OnClickListener clickListener) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage("Your loaction is not on. Do you want on your mobile location ?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        clickListener.onClick(null);
+                    }
+                });
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+    }
+
 }

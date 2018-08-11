@@ -30,7 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.techzellent.hicycle.util.AlertUtil;
+import com.techzellent.hicycle.util.PopUtils;
 import com.techzellent.hicycle.util.SharedPrefUtil;
+import com.techzellent.hicycle.util.StaticUtils;
 import com.techzellent.hicycle.wsCalling.WSUtils;
 import com.techzellent.hicycle.wsCalling.WsCalling;
 import com.techzellent.hicycle.wsCalling.WsReponse;
@@ -158,23 +161,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         password = mPasswordView.getText().toString().trim();
         boolean cancel = false;
         View focusView = null;
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!email.endsWith("@gmail.com")) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
             cancel = true;
         }
         if (cancel) {
@@ -182,13 +176,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             focusView.requestFocus();
         } else {
             Log.e("LoginActivity", "else part");
-            goToStationMap();
-            /*if (new SharedPrefUtil(LoginActivity.this).isLoggedIn()) {
+            if (StaticUtils.isNetworkConnected(this)) {
                 goToStationMap();
-             } else {
-                showProgress(true);
+            } else {
+                AlertUtil alertUtil = new AlertUtil(this);
+                alertUtil.showAlertOk(getResources().getString(R.string.app_name), getString(R.string.no_internet_connection), new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
             }
-       */
 
         }
     }
@@ -345,8 +343,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         showProgress(true);
         try {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("userId", "test");
-            jsonBody.put("password", "test");
+            jsonBody.put("userId", email);
+            jsonBody.put("password", password);
             jsonBody.put("cycleNum", "1");
             jsonBody.put("stationNum", "1");
             final String requestBody = jsonBody.toString();
@@ -370,7 +368,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         showProgress(false);
         switch (responseCode) {
             case WSUtils.LOGIN_WS_CODE:
-                sharedPrefUtil.saveLoginStatus(true);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
@@ -378,16 +375,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
                     String token = jsonObject.getString("token");
                     sharedPrefUtil.setToken(token.toString());
                     if (status) {
+                        sharedPrefUtil.saveLoginStatus(true);
                         Intent intent = new Intent(LoginActivity.this, StationMap.class);
                         LoginActivity.this.startActivity(intent);
                         LoginActivity.this.finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Invaild user ID/Password.", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 break;
             default:
                 break;

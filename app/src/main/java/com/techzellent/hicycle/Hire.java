@@ -17,6 +17,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.techzellent.hicycle.barcode.BarcodeCaptureActivity;
 import com.techzellent.hicycle.util.AlertUtil;
 import com.techzellent.hicycle.util.SharedPrefUtil;
+import com.techzellent.hicycle.util.StaticUtils;
 import com.techzellent.hicycle.wsCalling.WSUtils;
 import com.techzellent.hicycle.wsCalling.WsCalling;
 import com.techzellent.hicycle.wsCalling.WsReponse;
@@ -55,24 +56,45 @@ public class Hire extends Activity implements WsReponse {
         btnHireLeave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (startTime == 0) {
-                    Intent intent = new Intent(Hire.this, BarcodeCaptureActivity.class);
-                    startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
+
+                if (StaticUtils.isNetworkConnected(Hire.this)) {
+
+                    if (startTime == 0) {
+                        Intent intent = new Intent(Hire.this, BarcodeCaptureActivity.class);
+                        startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
+                    } else {
+                        btnHireLeave.setText("Hire Bicycle");
+                        cm.stop();
+                        startTime = 0;
+                        (new SharedPrefUtil(Hire.this)).saveStartTime(startTime);
+                        wsCallingEndTrip();
+                    }
                 } else {
-                    btnHireLeave.setText("Hire Bicycle");
-                    cm.stop();
-                    startTime = 0;
-                    (new SharedPrefUtil(Hire.this)).saveStartTime(startTime);
-                    wsCallingEndTrip();
+                    AlertUtil alertUtil = new AlertUtil(Hire.this);
+                    alertUtil.showAlertOk(getResources().getString(R.string.app_name), getString(R.string.no_internet_connection), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
                 }
+
             }
         });
         btnUnlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hire_progress.setVisibility(View.VISIBLE);
-                btnUnlock.setEnabled(false);
-                callWsUnlock();
+                if (StaticUtils.isNetworkConnected(Hire.this)) {
+                    hire_progress.setVisibility(View.VISIBLE);
+                    btnUnlock.setEnabled(false);
+                    callWsUnlock();
+                 } else {
+                    AlertUtil alertUtil = new AlertUtil(Hire.this);
+                    alertUtil.showAlertOk(getResources().getString(R.string.app_name), getString(R.string.no_internet_connection), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
+                }
             }
         });
 
@@ -155,7 +177,6 @@ public class Hire extends Activity implements WsReponse {
                     btnHireLeave.setText("Unassign Bicycle");
                     cm.start();
                     Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.SUCCESS, "true");
                     bundle.putString(FirebaseAnalytics.Param.VALUE, barcode.displayValue);
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                     (new AlertUtil(Hire.this)).showAlertOk(TAG, "Bicycle  " + barcode.displayValue, new View.OnClickListener() {
@@ -169,7 +190,6 @@ public class Hire extends Activity implements WsReponse {
                 } else {
                     Log.e(TAG, "QR Code not scanned Properly");
                     Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.SUCCESS, "true");
                     bundle.putString(FirebaseAnalytics.Param.VALUE, "No QR");
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                     (new AlertUtil(Hire.this)).showAlertOk(TAG, "null Bicycle  data", new View.OnClickListener() {
@@ -184,7 +204,6 @@ public class Hire extends Activity implements WsReponse {
                 Log.e(TAG, String.format(getString(R.string.barcode_error_format),
                         CommonStatusCodes.getStatusCodeString(resultCode)));
             Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.SUCCESS, "false");
             bundle.putString(FirebaseAnalytics.Param.VALUE, "No QR");
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 //                (new AlertUtil(Hire.this)).showAlertOk(TAG,CommonStatusCodes.getStatusCodeString(resultCode) );
